@@ -12,7 +12,7 @@ def index():
     return send_from_directory("../static", "index.html")
 
 # API endpoint to tokenize a word into syllables
-@app.route("/tokenize", methods=["POST"])
+@app.route("/api/tokenize", methods=["POST"])
 def tokenize():
     data = request.json
     word = data.get('word')

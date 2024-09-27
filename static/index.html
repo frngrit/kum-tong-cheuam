@@ -172,7 +172,7 @@
             }
 
             // Send the word to the Flask backend for syllable tokenization
-            fetch("/api/tokenize", {
+            fetch("/tokenize", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

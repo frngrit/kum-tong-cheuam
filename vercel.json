@@ -4,8 +4,7 @@
       { "src": "static/index.html", "use": "@vercel/static" }
     ],
     "routes": [
-      { "src": "/api/(.*)", "dest": "/api/app.py" },
-      { "src": "/(.*)", "dest": "/static/index.html" }
+      { "src": "/(.*)", "dest": "/api/app.py" }
     ]
   }
   

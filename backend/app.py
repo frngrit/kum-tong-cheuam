@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def index():
-    return send_from_directory("static", "index.html")
+    return send_from_directory("../static", "index.html")
 
 # API endpoint to tokenize a word into syllables
 @app.route("/tokenize", methods=["POST"])

@@ -146,7 +146,8 @@
 
     <script>
         var wordDict = new Map();  // Dictionary to store words and their syllables
-        var stackMem = []
+        var wordStack = []
+        var syllableStack = []
 
         // Function to reset the game
         document.getElementById("newGame").addEventListener("click", function () {
@@ -187,7 +188,7 @@
                     // Check for duplicate syllables in the dictionary
                     for (let syllable of syllables) {
                         if (wordDict.has(syllable)) {
-                            showMessage(`${wordInput} Duplicated on syllable: ${syllable}, with word: ${wordDict[syllable]}`, "dramatic-error");
+                            showMessage(`${wordInput} Duplicated on syllable: ${syllable}, with word: ${wordDict.get(syllable)}`, "dramatic-error");
                             return;
                         }
                     }
@@ -196,9 +197,9 @@
                     for (let syllable of syllables) {
                         wordDict.set(syllable, wordInput)
                     }
+                    syllableStack.push(syllables)
 
                     addWordToDict(wordInput);
-                    stackMem.push(wordInput)
                     showMessage("Word added successfully!", "success-message");
                     document.getElementById("wordInput").value = ""; // Clear input field
                 });
@@ -220,6 +221,7 @@
                 console.log('redo')
             } else if ((evt.key === 'z' || evt.key === 'ผ') && (evt.ctrlKey || evt.metaKey)) {
                 console.log('undo')
+                undo()
             }
 
         })
@@ -237,7 +239,18 @@
 
         function undo() {
             const wordList = document.getElementById("wordList");
-            wordList.removeChild(wordList.lastChild)
+            const lastChild = wordList.lastChild
+
+            if (!lastChild) return
+
+            wordList.removeChild(lastChild)
+            var keys = syllableStack.pop()
+            console.log(syllableStack)
+
+            for (const key of keys) {
+                console.log(key)
+                wordDict.delete(key)
+            }
         }
 
 

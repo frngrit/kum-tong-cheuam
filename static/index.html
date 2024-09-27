@@ -145,11 +145,12 @@
     </div>
 
     <script>
-        let wordDict = {};  // Dictionary to store words and their syllables
+        var wordDict = new Map();  // Dictionary to store words and their syllables
+        var stackMem = []
 
         // Function to reset the game
         document.getElementById("newGame").addEventListener("click", function () {
-            wordDict = {};
+            wordDict.clear()
             document.getElementById("wordList").innerHTML = "";
             showMessage("New game started!", "success-message");
             document.getElementById("wordInput").value = ""; // Clear input field
@@ -166,7 +167,7 @@
             }
 
             // Check if the word already exists in the dictionary
-            if (Object.values(wordDict).includes(wordInput)) {
+            if (wordDict.values().some(x => x === wordInput)) {
                 showMessage(`Used word detected: ${wordInput}`, "dramatic-error");
                 return;
             }
@@ -185,7 +186,7 @@
 
                     // Check for duplicate syllables in the dictionary
                     for (let syllable of syllables) {
-                        if (syllable in wordDict) {
+                        if (wordDict.has(syllable)) {
                             showMessage(`${wordInput} Duplicated on syllable: ${syllable}, with word: ${wordDict[syllable]}`, "dramatic-error");
                             return;
                         }
@@ -193,10 +194,11 @@
 
                     // Add syllables to the dictionary
                     for (let syllable of syllables) {
-                        wordDict[syllable] = wordInput;
+                        wordDict.set(syllable, wordInput)
                     }
 
                     addWordToDict(wordInput);
+                    stackMem.push(wordInput)
                     showMessage("Word added successfully!", "success-message");
                     document.getElementById("wordInput").value = ""; // Clear input field
                 });
@@ -212,6 +214,16 @@
             }
         });
 
+        window.addEventListener("keypress", function (evt) {
+            console.log(evt.key)
+            if (evt.key === 'Z' && (evt.ctrlKey || evt.metaKey) && evt.shiftKey) {
+                console.log('redo')
+            } else if ((evt.key === 'z' || evt.key === 'ผ') && (evt.ctrlKey || evt.metaKey)) {
+                console.log('undo')
+            }
+
+        })
+
         // Function to add a word to the dictionary and update the word list
         function addWordToDict(word) {
             const wordList = document.getElementById("wordList");
@@ -222,6 +234,13 @@
             // Scroll to the bottom of the word list
             wordList.scrollTo({ top: wordList.scrollHeight, behavior: "smooth" });
         }
+
+        function undo() {
+            const wordList = document.getElementById("wordList");
+            wordList.removeChild(wordList.lastChild)
+        }
+
+
 
 
         // Function to show success or error messages

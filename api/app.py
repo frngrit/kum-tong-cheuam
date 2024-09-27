@@ -1,10 +1,11 @@
 from flask import Flask, send_from_directory, request
 from pythainlp.tokenize import syllable_tokenize
 from pythainlp.spell import correct
+from pythainlp.tools.path import get_pythainlp_data_path
 import os
 
 os.environ['PYTHAINLP_DATA_DIR'] = '/tmp'
-
+print(get_pythainlp_data_path())
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])

@@ -17,7 +17,7 @@ def tokenize():
     data = request.json
     word = data.get('word')
     tokenized_syllables = syllable_tokenize(word, engine="dict")
-    return {"syllables": tokenized_syllables}
+    return {"syllables": [w for w in tokenized_syllables if w.strip() != ""]}
 
 if __name__ == "__main__":
     app.run(debug=True)

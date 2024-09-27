@@ -1,6 +1,9 @@
 from flask import Flask, send_from_directory, request
 from pythainlp.tokenize import syllable_tokenize
 from pythainlp.spell import correct
+import os
+
+os.environ['PYTHAINLP_DATA_DIR'] = '/tmp'
 
 app = Flask(__name__)
 

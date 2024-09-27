@@ -4,10 +4,7 @@ os.environ['PYTHAINLP_DATA_DIR'] = '/tmp'
 
 from flask import Flask, send_from_directory, request
 from pythainlp.tokenize import syllable_tokenize
-from pythainlp.spell import correct
-from pythainlp.tools.path import get_pythainlp_data_path
 
-print(get_pythainlp_data_path())
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
@@ -18,7 +15,7 @@ def index():
 @app.route("/tokenize", methods=["POST"])
 def tokenize():
     data = request.json
-    word = correct(data.get('word'))
+    word = data.get('word')
     tokenized_syllables = syllable_tokenize(word, engine="dict")
     return {"syllables": tokenized_syllables}
 
